@@ -252,7 +252,7 @@ function LedgerForm({ accountId }: any) {
     return (
         <div>
             <label className="block text-2xl font-semibold text-slate-800 mb-4">Ledger Form</label>
-            <form ref={getForm} onSubmit={void handleSubmit} className="flex flex-row gap-2">
+            <form ref={getForm} onSubmit={handleSubmit} className="flex flex-row gap-2">
                 <fieldset className="flex flex-col">
                     <label className="font-semibold text-slate-700 mb-2">Date</label>
                     <input ref={getInput} type="date" className="p-1 pl-2 w-40 rounded-sm text-slate-600 bg-slate-100 border-solid border-2 border-slate-200" name="date" required/>
@@ -316,7 +316,7 @@ function LedgerItem(entry: any) {
     function hasDelete() {
         if (item.id) {
             return (
-                <button className="font-semibold bg-slate-200 px-2 py-1" onClick={void handler(item.id)}>DELETE</button>
+                <button className="font-semibold bg-slate-200 px-2 py-1" onClick={handler(item.id)}>DELETE</button>
             )
         }
     }
