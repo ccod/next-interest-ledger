@@ -47,11 +47,11 @@ function AccountItem({ account }: any): React.ReactElement {
 
     function handler(id: string) {
         return async () => {
-            let accept = confirm('Are you sure you want to delete?')
+            const accept = confirm('Are you sure you want to delete?')
 
             if (accept) {
                 await mutation.mutateAsync({ id })
-                utils.invalidate()
+                void utils.invalidate()
             }
         }
     }
@@ -68,7 +68,7 @@ function AccountItem({ account }: any): React.ReactElement {
                 <div className="flex flex-row-reverse gap-2">
                     <Link href={'/' + account.id} className="px-4 py-2 font-semibold bg-slate-800 text-slate-50 rounded-md">VIEW</Link>
                     <Link href={'/' + account.id + '/edit'} className="px-4 py-2 font-semibold bg-slate-200 text-slate-800 rounded-md">EDIT</Link>
-                    <button className="px-4 py-2 font-semibold text-slate-800 rounded-md" onClick={handler(account.id)}>DELETE</button>
+                    <button className="px-4 py-2 font-semibold text-slate-800 rounded-md" onClick={void handler(account.id)}>DELETE</button>
                 </div>
             </div>
 

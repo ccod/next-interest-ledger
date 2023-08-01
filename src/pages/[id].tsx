@@ -8,7 +8,7 @@ export default function CreateInterestAccount() {
 
 
     function addMonth(date: Date, amount: number) {
-        let tempDate = new Date(date)
+        const tempDate = new Date(date)
         tempDate.setMonth(tempDate.getMonth() + amount)
         return tempDate
     }
@@ -28,7 +28,7 @@ export default function CreateInterestAccount() {
             }
 
             if (rate == 'inc-each') {
-                let year = Math.floor(month / 12)
+                const year = Math.floor(month / 12)
                 return interest + year 
             }
         }
@@ -44,13 +44,13 @@ export default function CreateInterestAccount() {
 
     function generateInterestPeriods(account: any) {
         let currentMonth = 0
-        let currentDate = addMonth(data?.startDate as Date, 0)
-        let todayDate = new Date()
-        let entries = []
+        let currentDate = addMonth(data!.startDate, 0)
+        const todayDate = new Date()
+        const entries = []
         const adjustedRate = genAdjustedInterestRate(account.interest, account.incrementRate)
 
         while (currentDate < todayDate) {
-            let currentPeriod = nextPeriod(account.frequency, currentMonth, adjustedRate)
+            const currentPeriod = nextPeriod(account.frequency, currentMonth, adjustedRate)
             entries.push({
                 date: currentDate, interest: currentPeriod.interest
             })
@@ -88,8 +88,8 @@ export default function CreateInterestAccount() {
         let currentTotal = data.principle
 
         function interestToLedgerItem(entry: any) {
-            let credit = currentTotal * (entry.interest / 100)
-            let holdTotal = currentTotal
+            const credit = currentTotal * (entry.interest / 100)
+            const holdTotal = currentTotal
             currentTotal += credit
             return { 
                 date: entry.date, 
@@ -117,7 +117,7 @@ export default function CreateInterestAccount() {
 
     function preparedEntries() {
             let entries = generateInterestPeriods(data)
-            entries.push(...data?.ledger)
+            entries.push(...data?.ledger as any)
             entries = sortByDate(entries)
             entries = runningEntries(entries)
 
@@ -229,7 +229,7 @@ function LedgerForm({ accountId }: any) {
     async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        let data: any = {}
+        const data: any = {}
         const formData = new FormData(form)
         formData.forEach((val, key) => (data[key] = val))
         const ledgerEntry = convertToEntry(data, accountId)
@@ -237,11 +237,11 @@ function LedgerForm({ accountId }: any) {
         const fetchedData = await mutation.mutateAsync(ledgerEntry)
 
         if (fetchedData) {
-            utils.invalidate()
+            void utils.invalidate()
         }
 
         if (mutation.error) {
-            console.log(mutation.error && mutation.error.message)
+            console.log(mutation.error.message)
         } else {
             form.reset()
             dateNode.focus()
@@ -252,7 +252,7 @@ function LedgerForm({ accountId }: any) {
     return (
         <div>
             <label className="block text-2xl font-semibold text-slate-800 mb-4">Ledger Form</label>
-            <form ref={getForm} onSubmit={handleSubmit} className="flex flex-row gap-2">
+            <form ref={getForm} onSubmit={void handleSubmit} className="flex flex-row gap-2">
                 <fieldset className="flex flex-col">
                     <label className="font-semibold text-slate-700 mb-2">Date</label>
                     <input ref={getInput} type="date" className="p-1 pl-2 w-40 rounded-sm text-slate-600 bg-slate-100 border-solid border-2 border-slate-200" name="date" required/>
@@ -304,19 +304,19 @@ function LedgerTable({ entries }: any) {
 function LedgerItem(entry: any) {
     const mutation = api.ledger.deleteLedgerItem.useMutation()
     const utils = api.useContext() 
-    let item = entry?.entry
+    const item = entry?.entry
 
     function handler(id: string) {
         return async () => {
             await mutation.mutateAsync({ id })
-            utils.invalidate()
+            void utils.invalidate()
         }
     }
 
     function hasDelete() {
         if (item.id) {
             return (
-                <button className="font-semibold bg-slate-200 px-2 py-1" onClick={handler(item.id)}>DELETE</button>
+                <button className="font-semibold bg-slate-200 px-2 py-1" onClick={void handler(item.id)}>DELETE</button>
             )
         }
     }

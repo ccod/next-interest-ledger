@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router";
 
-export default function Layout(props) {
+export default function Layout({ children }: any) {
     const router = useRouter()
     console.log('is router base path: ', router.pathname)
 
@@ -28,7 +28,7 @@ export default function Layout(props) {
                         <Link href="/" className={'text-slate-600 font-semibold ' + shouldUnderline()}>HOME</Link>
                         <AuthButton />
                     </div>
-                    { props.children }
+                    { children }
                 </div>
             </main>
         </>
@@ -41,7 +41,7 @@ function AuthButton() {
     if (sessionData) {
         return (
             <button 
-            onClick={() => signOut()}
+            onClick={() => void signOut()}
             className="bg-slate-300 text-slate-700 font-bold py-1 px-2 rounded-sm"
             >
                 SIGN OUT
@@ -50,7 +50,7 @@ function AuthButton() {
     } else {
         return (
             <button 
-                onClick={() => signIn()}
+                onClick={() => void signIn()}
                 className="bg-slate-300 text-slate-700 font-bold py-1 px-2 rounded-sm"
             >
                 SIGN IN

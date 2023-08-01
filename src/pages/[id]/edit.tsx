@@ -49,7 +49,7 @@ export default function InterestAccountForm() {
     function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        let tempData: any = {}
+        const tempData: any = {}
         const formData = new FormData(form)
         formData.forEach((val, key) => (tempData[key] = val))
         const account = convertToAccount(tempData as RawAccountForm)
@@ -63,7 +63,7 @@ export default function InterestAccountForm() {
         if (mutation.error) {
             console.log(mutation.error.message)
         } else {
-            router.push('/')
+            void router.push('/')
         }
 
     }
